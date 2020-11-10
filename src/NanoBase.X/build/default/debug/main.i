@@ -6110,16 +6110,16 @@ void main(void)
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
 
-    LATAbits.LATA2 = 0;;
+    do { LATAbits.LATA2 = 0; } while(0);
 
     while(1){
-        paridad(7);
+        paridad(4);
         if (par_impar==1){
 
-            LATAbits.LATA2 = 1;;
+            do { LATAbits.LATA2 = 1; } while(0);
         }else{
 
-            LATAbits.LATA2 = 0;;
+            do { LATAbits.LATA2 = 0; } while(0);
         }
         _delay((unsigned long)((1000)*(1000000/4000.0)));
     }

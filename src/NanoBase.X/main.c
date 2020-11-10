@@ -1,21 +1,13 @@
 /*
-????????   ???????     ??????? 
-????????   ????????    ????????
-??????     ???  ???     ???????
-??????     ???  ???    ??????? 
-???????????????????    ????????
-??????????????????     ????????
-                               
-
 /////////////////// DATOS DEL PROGRAMA ////////////////////
-                                                            
-//  TÍTULO: Led Blinkng          												
-//  MICRO:PIC16F15244						
+
+//  TTITULO: Led Blinkng
+//  MICRO:PIC16F15244
 //  ESTUDIANTES: Harold F MURCIA
-//  Profesor: Harold F MURCIA								
-//  FECHA: 10 de noviembre de 2020							
-                                                          
-///////////// CONFIGURACIÓN del MCU ////////////////// */
+//  Profesor: Harold F MURCIA
+//  FECHA: 10 de noviembre de 2020
+
+///////////// CONFIGURACIï¿½N del MCU ////////////////// */
 
 #include <xc.h>
 #include <stdint.h>
@@ -51,97 +43,36 @@
 #pragma config CP = OFF    // User Program Flash Memory Code Protection bit->User Program Flash Memory code protection is disabled
 
 
-#define _XTAL_FREQ 1000000
-
 
 ///////////// DEFINICIONES  //////////////////
+#define _XTAL_FREQ 1000000
 
-
-#define INPUT   1
-#define OUTPUT  0
-
-#define HIGH    1
-#define LOW     0
-
-#define ANALOG      1
-#define DIGITAL     0
-
-#define PULL_UP_ENABLED      1
-#define PULL_UP_DISABLED     0
-
-// get/set LED0 aliases
-#define LED0_TRIS                 TRISAbits.TRISA2
-#define LED0_LAT                  LATAbits.LATA2
-#define LED0_PORT                 PORTAbits.RA2
-#define LED0_WPU                  WPUAbits.WPUA2
-#define LED0_OD                   ODCONAbits.ODCA2
-#define LED0_ANS                  ANSELAbits.ANSA2
-#define LED0_SetHigh()            do { LATAbits.LATA2 = 1; } while(0)
-#define LED0_SetLow()             do { LATAbits.LATA2 = 0; } while(0)
-#define LED0_Toggle()             do { LATAbits.LATA2 = ~LATAbits.LATA2; } while(0)
-#define LED0_GetValue()           PORTAbits.RA2
-#define LED0_SetDigitalInput()    do { TRISAbits.TRISA2 = 1; } while(0)
-#define LED0_SetDigitalOutput()   do { TRISAbits.TRISA2 = 0; } while(0)
-#define LED0_SetPullup()          do { WPUAbits.WPUA2 = 1; } while(0)
-#define LED0_ResetPullup()        do { WPUAbits.WPUA2 = 0; } while(0)
-#define LED0_SetPushPull()        do { ODCONAbits.ODCA2 = 0; } while(0)
-#define LED0_SetOpenDrain()       do { ODCONAbits.ODCA2 = 1; } while(0)
-#define LED0_SetAnalogMode()      do { ANSELAbits.ANSA2 = 1; } while(0)
-#define LED0_SetDigitalMode()     do { ANSELAbits.ANSA2 = 0; } while(0)
+#define LED0_SetHigh()            LATAbits.LATA2 = 1;
+#define LED0_SetLow()             LATAbits.LATA2 = 0;
 
 ///////////// VARIABLES GLOBALES  //////////////////
 
-///////////// DECLARACIÓN DE FUNCIONES Y PROCEDIMIENTOS ///////////////////
+int par_impar=0;
+
+///////////// DECLARACIï¿½N DE FUNCIONES Y PROCEDIMIENTOS ///////////////////
 void PIN_MANAGER_Initialize(void)
 {
-    // LATx registers
-    LATA = 0x00;
-    LATB = 0x00;
-    LATC = 0x00;
-
     // TRISx registers
-    TRISA = 0x3B;
-    TRISB = 0xF0;
-    TRISC = 0xFF;
-
-    // ANSELx registers
-    ANSELC = 0xFF;
-    ANSELB = 0xF0;
-    ANSELA = 0x33;
-
-    // WPUx registers
-    WPUB = 0x00;
-    WPUA = 0x00;
-    WPUC = 0x00;
-
-    // ODx registers
-    ODCONA = 0x04;
-    ODCONB = 0x00;
-    ODCONC = 0x00;
-
-    // SLRCONx registers
-    SLRCONA = 0x37;
-    SLRCONB = 0xF0;
-    SLRCONC = 0xFF;
-
-    // INLVLx registers
-    INLVLA = 0x3F;
-    INLVLB = 0xF0;
-    INLVLC = 0xFF;   
+    TRISA2 = 0;          // Definiendo puerto A2 como salida digital
 }
 
 
 
 void OSCILLATOR_Initialize(void)
-{ 
-    OSCEN = 0x00;                                                               // MFOEN disabled; LFOEN disabled; ADOEN disabled; HFOEN disabled; 
-    OSCFRQ = 0x00;                                                              // HFFRQ0 1_MHz 
+{
+    OSCEN = 0x00;                                                               // MFOEN disabled; LFOEN disabled; ADOEN disabled; HFOEN disabled;
+    OSCFRQ = 0x00;                                                              // HFFRQ0 1_MHz
     OSCTUNE = 0x00;
 }
 
-void WDT_Initialize(void)
-{ 
-    WDTCON = 0x00;                                                              // WDTPS 1:32; WDTCS LFINTOSC (31 kHz); SWDTEN OFF;
+
+void paridad(int N){
+    par_impar = N%2;
 }
 
 
@@ -153,13 +84,18 @@ void main(void)
 {
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
-    WDT_Initialize();                                                        // Initialize the device
+    // Apagar led
+    LED0_SetLow();
 
-    while (1)
-    {
-        LED0_SetDigitalInput();                                                 // Turn LED OFF
-        __delay_ms(1000);                                                       // One second delay
-        LED0_SetDigitalOutput();                                                // Turn LED ON
-        __delay_ms(1000);                                                       // One second delay
+    while(1){
+        paridad(7);
+        if (par_impar==1){
+            // Encender led
+            LED0_SetHigh();
+        }else{
+            // Apagar led
+            LED0_SetLow();
+        }
+        __delay_ms(1000);
     }
 }

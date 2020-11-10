@@ -3,10 +3,10 @@ Microchip MPLAB XC8 Compiler V2.30
 Linker command line:
 
 -W-3 --edf=/opt/microchip/xc8/v2.30/pic/dat/en_msgs.txt -cn \
-  -h+dist/default/production/NanoBase.X.production.sym \
-  --cmf=dist/default/production/NanoBase.X.production.cmf -z -Q16F15244 \
-  -o/tmp/xcXAflaBI --defsym=__MPLAB_BUILD=1 \
-  -Mdist/default/production/NanoBase.X.production.map -E1 -ver=XC8 Compiler \
+  -h+dist/default/debug/NanoBase.X.debug.sym \
+  --cmf=dist/default/debug/NanoBase.X.debug.cmf -z -Q16F15244 \
+  -o/tmp/xcXaIeiPa --defsym=__MPLAB_BUILD=1 \
+  -Mdist/default/debug/NanoBase.X.debug.map -E1 -ver=XC8 Compiler \
   --acfsm=1493 -ASTACK=02000h-021EFh -pstack=STACK -ACODE=00h-07FFhx2 \
   -ASTRCODE=00h-0FFFh -ASTRING=00h-0FFhx16 -ACONST=00h-0FFhx16 \
   -AENTRY=00h-0FFhx16 -ACOMMON=070h-07Fh -ABANK0=020h-06Fh \
@@ -39,8 +39,7 @@ Linker command line:
   -ACONFIG=08007h-0800Bh -DCONFIG=2 -AIDLOC=08000h-08003h -DIDLOC=2 \
   -DCODE=2 -DSTRCODE=2 -DSTRING=2 -DCONST=2 -DENTRY=2 \
   -preset_vec=00h,intentry,init,end_init -ppowerup=CODE -pcinit=CODE \
-  -pfunctab=ENTRY -k /tmp/xcXOLEchB.o \
-  dist/default/production/NanoBase.X.production.o 
+  -pfunctab=ENTRY -k /tmp/xcXhKaEdN.o dist/default/debug/NanoBase.X.debug.o 
 
 Object code version is 3.11
 
@@ -49,11 +48,11 @@ Machine type is 16F15244
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-/tmp/xcXOLEchB.o
+/tmp/xcXhKaEdN.o
                 end_init                              2        2        2        0       0
                 reset_vec                             0        0        2        0       0
                 config                             8007     8007        5        0       4
-dist/default/production/NanoBase.X.production.o
+dist/default/debug/NanoBase.X.debug.o
                 cinit                               7FD      7FD        3      FFA       0
                 config                             8007     8007        5        0       4
                 text3                               7C9      7C9        5      F92       0

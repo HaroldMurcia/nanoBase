@@ -685,44 +685,56 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;main.c: 86:     OSCILLATOR_Initialize();
 [e ( _OSCILLATOR_Initialize ..  ]
 "88
-[; ;main.c: 88:     LATAbits.LATA2 = 0;;
+[; ;main.c: 88:     do { LATAbits.LATA2 = 0; } while(0);
+[e :U 513 ]
+{
 [e = . . _LATAbits 0 2 -> -> 0 `i `uc ]
+}
+[e :U 512 ]
 "90
 [; ;main.c: 90:     while(1){
-[e :U 512 ]
+[e :U 515 ]
 {
 "91
-[; ;main.c: 91:         paridad(7);
-[e ( _paridad (1 -> 7 `i ]
+[; ;main.c: 91:         paridad(4);
+[e ( _paridad (1 -> 4 `i ]
 "92
 [; ;main.c: 92:         if (par_impar==1){
-[e $ ! == _par_impar -> 1 `i 514  ]
+[e $ ! == _par_impar -> 1 `i 517  ]
 {
 "94
-[; ;main.c: 94:             LATAbits.LATA2 = 1;;
+[; ;main.c: 94:             do { LATAbits.LATA2 = 1; } while(0);
+[e :U 520 ]
+{
 [e = . . _LATAbits 0 2 -> -> 1 `i `uc ]
+}
+[e :U 519 ]
 "95
 [; ;main.c: 95:         }else{
 }
-[e $U 515  ]
-[e :U 514 ]
+[e $U 521  ]
+[e :U 517 ]
 {
 "97
-[; ;main.c: 97:             LATAbits.LATA2 = 0;;
+[; ;main.c: 97:             do { LATAbits.LATA2 = 0; } while(0);
+[e :U 524 ]
+{
 [e = . . _LATAbits 0 2 -> -> 0 `i `uc ]
+}
+[e :U 523 ]
 "98
 [; ;main.c: 98:         }
 }
-[e :U 515 ]
+[e :U 521 ]
 "99
 [; ;main.c: 99:         _delay((unsigned long)((1000)*(1000000/4000.0)));
 [e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
 "100
 [; ;main.c: 100:     }
 }
-[e :U 511 ]
-[e $U 512  ]
-[e :U 513 ]
+[e :U 514 ]
+[e $U 515  ]
+[e :U 516 ]
 "101
 [; ;main.c: 101: }
 [e :UE 510 ]

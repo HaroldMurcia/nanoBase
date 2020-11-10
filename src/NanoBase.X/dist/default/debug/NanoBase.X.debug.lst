@@ -1,7 +1,7 @@
 
 
 Microchip MPLAB XC8 Assembler V2.30 build 20200825195618 
-                                                                                               Tue Nov 10 12:32:28 2020
+                                                                                               Tue Nov 10 11:27:24 2020
 
 Microchip MPLAB XC8 C Compiler v2.30 (Free license) build 20200825195618 Og1 
      1                           	processor	16F15244
@@ -335,7 +335,7 @@ Microchip MPLAB XC8 C Compiler v2.30 (Free license) build 20200825195618 Og1
    321                           
    322                           ;psect for function _main
    323  07D5                     _main:
-   324  07D5                     l579:	
+   324  07D5                     l583:	
    325                           ;incstack = 0
    326                           ; Regs used in _main: [wreg+status,2+status,0+pclath+cstack]
    327                           
@@ -345,271 +345,267 @@ Microchip MPLAB XC8 C Compiler v2.30 (Free license) build 20200825195618 Og1
    331                           
    332                           ;main.c: 86:     OSCILLATOR_Initialize();
    333  07D8  3187  27C9  3187   	fcall	_OSCILLATOR_Initialize
-   334  07DB                     l581:
-   335                           
-   336                           ;main.c: 88:     LATAbits.LATA2 = 0;;
-   337  07DB  0140               	movlb	0	; select bank0
-   338  07DC  1118               	bcf	24,2	;volatile
-   339  07DD                     l583:
-   340                           
-   341                           ;main.c: 91:         paridad(7);
-   342  07DD  3007               	movlw	7
-   343  07DE  00F0               	movwf	paridad@N
-   344  07DF  3000               	movlw	0
-   345  07E0  00F1               	movwf	paridad@N+1
-   346  07E1  3187  27CE  3187   	fcall	_paridad
-   347  07E4                     l585:
-   348                           
-   349                           ;main.c: 92:         if (par_impar==1){
-   350  07E4  0374               	decf	_par_impar,w
-   351  07E5  0475               	iorwf	_par_impar+1,w
-   352  07E6  1D03               	btfss	3,2
-   353  07E7  2FE9               	goto	u21
-   354  07E8  2FEA               	goto	u20
-   355  07E9                     u21:
-   356  07E9  2FED               	goto	l29
-   357  07EA                     u20:
-   358  07EA                     l587:
-   359                           
-   360                           ;main.c: 94:             LATAbits.LATA2 = 1;;
-   361  07EA  0140               	movlb	0	; select bank0
-   362  07EB  1518               	bsf	24,2	;volatile
-   363                           
-   364                           ;main.c: 95:         }else{
-   365  07EC  2FEF               	goto	l589
-   366  07ED                     l29:
-   367                           
-   368                           ;main.c: 97:             LATAbits.LATA2 = 0;;
-   369  07ED  0140               	movlb	0	; select bank0
-   370  07EE  1118               	bcf	24,2	;volatile
-   371  07EF                     l589:
-   372                           
-   373                           ;main.c: 99:         _delay((unsigned long)((1000)*(1000000/4000.0)));
-   374  07EF  3002               	movlw	2
-   375  07F0  00F3               	movwf	??_main+1
-   376  07F1  3045               	movlw	69
-   377  07F2  00F2               	movwf	??_main
-   378  07F3  30AA               	movlw	170
-   379  07F4                     u37:
-   380  07F4  0B89               	decfsz	9,f
-   381  07F5  2FF4               	goto	u37
-   382  07F6  0BF2               	decfsz	??_main,f
-   383  07F7  2FF4               	goto	u37
-   384  07F8  0BF3               	decfsz	??_main+1,f
-   385  07F9  2FF4               	goto	u37
-   386  07FA  2FDD               	goto	l583
-   387  07FB  3180  2802         	ljmp	start
-   388  07FD                     __end_of_main:
-   389                           
-   390                           	psect	text1
-   391  07CE                     __ptext1:	
-   392 ;; *************** function _paridad *****************
-   393 ;; Defined at:
-   394 ;;		line 74 in file "main.c"
-   395 ;; Parameters:    Size  Location     Type
-   396 ;;  N               2    0[COMMON] int 
-   397 ;; Auto vars:     Size  Location     Type
-   398 ;;		None
-   399 ;; Return value:  Size  Location     Type
-   400 ;;                  1    wreg      void 
-   401 ;; Registers used:
-   402 ;;		wreg
-   403 ;; Tracked objects:
-   404 ;;		On entry : 0/0
-   405 ;;		On exit  : 0/0
-   406 ;;		Unchanged: 0/0
-   407 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6
-   408 ;;      Params:         2       0       0       0       0       0       0       0
-   409 ;;      Locals:         0       0       0       0       0       0       0       0
-   410 ;;      Temps:          0       0       0       0       0       0       0       0
-   411 ;;      Totals:         2       0       0       0       0       0       0       0
-   412 ;;Total ram usage:        2 bytes
-   413 ;; Hardware stack levels used:    1
-   414 ;; This function calls:
-   415 ;;		Nothing
-   416 ;; This function is called by:
-   417 ;;		_main
-   418 ;; This function uses a non-reentrant model
-   419 ;;
-   420                           
-   421                           
-   422                           ;psect for function _paridad
-   423  07CE                     _paridad:
-   424  07CE                     l577:	
-   425                           ;incstack = 0
-   426                           ; Regs used in _paridad: [wreg]
-   427                           
-   428                           
-   429                           ;main.c: 75:     par_impar = N%2;
-   430  07CE  3001               	movlw	1
-   431  07CF  0570               	andwf	paridad@N,w
-   432  07D0  00F4               	movwf	_par_impar
-   433  07D1  3000               	movlw	0
-   434  07D2  0571               	andwf	paridad@N+1,w
-   435  07D3  00F5               	movwf	_par_impar+1
-   436  07D4                     l23:
-   437  07D4  0008               	return
-   438  07D5                     __end_of_paridad:
-   439                           
-   440                           	psect	text2
-   441  07C6                     __ptext2:	
-   442 ;; *************** function _PIN_MANAGER_Initialize *****************
-   443 ;; Defined at:
-   444 ;;		line 58 in file "main.c"
-   445 ;; Parameters:    Size  Location     Type
-   446 ;;		None
-   447 ;; Auto vars:     Size  Location     Type
+   334  07DB                     l585:
+   335  07DB  0140               	movlb	0	; select bank0
+   336  07DC  1118               	bcf	24,2	;volatile
+   337  07DD                     l587:
+   338                           
+   339                           ;main.c: 91:         paridad(4);
+   340  07DD  3004               	movlw	4
+   341  07DE  00F0               	movwf	paridad@N
+   342  07DF  3000               	movlw	0
+   343  07E0  00F1               	movwf	paridad@N+1
+   344  07E1  3187  27CE  3187   	fcall	_paridad
+   345  07E4                     l589:
+   346                           
+   347                           ;main.c: 92:         if (par_impar==1){
+   348  07E4  0374               	decf	_par_impar,w
+   349  07E5  0475               	iorwf	_par_impar+1,w
+   350  07E6  1D03               	btfss	3,2
+   351  07E7  2FE9               	goto	u21
+   352  07E8  2FEA               	goto	u20
+   353  07E9                     u21:
+   354  07E9  2FED               	goto	l35
+   355  07EA                     u20:
+   356  07EA                     l32:	
+   357                           ;main.c: 94:             do { LATAbits.LATA2 = 1; } while(0);
+   358                           
+   359  07EA  0140               	movlb	0	; select bank0
+   360  07EB  1518               	bsf	24,2	;volatile
+   361  07EC  2FEF               	goto	l591
+   362  07ED                     l35:	
+   363                           ;main.c: 97:             do { LATAbits.LATA2 = 0; } while(0);
+   364                           
+   365  07ED  0140               	movlb	0	; select bank0
+   366  07EE  1118               	bcf	24,2	;volatile
+   367  07EF                     l591:
+   368                           
+   369                           ;main.c: 99:         _delay((unsigned long)((1000)*(1000000/4000.0)));
+   370  07EF  3002               	movlw	2
+   371  07F0  00F3               	movwf	??_main+1
+   372  07F1  3045               	movlw	69
+   373  07F2  00F2               	movwf	??_main
+   374  07F3  30AA               	movlw	170
+   375  07F4                     u37:
+   376  07F4  0B89               	decfsz	9,f
+   377  07F5  2FF4               	goto	u37
+   378  07F6  0BF2               	decfsz	??_main,f
+   379  07F7  2FF4               	goto	u37
+   380  07F8  0BF3               	decfsz	??_main+1,f
+   381  07F9  2FF4               	goto	u37
+   382  07FA  2FDD               	goto	l587
+   383  07FB  3180  2802         	ljmp	start
+   384  07FD                     __end_of_main:
+   385                           
+   386                           	psect	text1
+   387  07CE                     __ptext1:	
+   388 ;; *************** function _paridad *****************
+   389 ;; Defined at:
+   390 ;;		line 74 in file "main.c"
+   391 ;; Parameters:    Size  Location     Type
+   392 ;;  N               2    0[COMMON] int 
+   393 ;; Auto vars:     Size  Location     Type
+   394 ;;		None
+   395 ;; Return value:  Size  Location     Type
+   396 ;;                  1    wreg      void 
+   397 ;; Registers used:
+   398 ;;		wreg
+   399 ;; Tracked objects:
+   400 ;;		On entry : 0/0
+   401 ;;		On exit  : 0/0
+   402 ;;		Unchanged: 0/0
+   403 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6
+   404 ;;      Params:         2       0       0       0       0       0       0       0
+   405 ;;      Locals:         0       0       0       0       0       0       0       0
+   406 ;;      Temps:          0       0       0       0       0       0       0       0
+   407 ;;      Totals:         2       0       0       0       0       0       0       0
+   408 ;;Total ram usage:        2 bytes
+   409 ;; Hardware stack levels used:    1
+   410 ;; This function calls:
+   411 ;;		Nothing
+   412 ;; This function is called by:
+   413 ;;		_main
+   414 ;; This function uses a non-reentrant model
+   415 ;;
+   416                           
+   417                           
+   418                           ;psect for function _paridad
+   419  07CE                     _paridad:
+   420  07CE                     l581:	
+   421                           ;incstack = 0
+   422                           ; Regs used in _paridad: [wreg]
+   423                           
+   424                           
+   425                           ;main.c: 75:     par_impar = N%2;
+   426  07CE  3001               	movlw	1
+   427  07CF  0570               	andwf	paridad@N,w
+   428  07D0  00F4               	movwf	_par_impar
+   429  07D1  3000               	movlw	0
+   430  07D2  0571               	andwf	paridad@N+1,w
+   431  07D3  00F5               	movwf	_par_impar+1
+   432  07D4                     l23:
+   433  07D4  0008               	return
+   434  07D5                     __end_of_paridad:
+   435                           
+   436                           	psect	text2
+   437  07C6                     __ptext2:	
+   438 ;; *************** function _PIN_MANAGER_Initialize *****************
+   439 ;; Defined at:
+   440 ;;		line 58 in file "main.c"
+   441 ;; Parameters:    Size  Location     Type
+   442 ;;		None
+   443 ;; Auto vars:     Size  Location     Type
+   444 ;;		None
+   445 ;; Return value:  Size  Location     Type
+   446 ;;                  1    wreg      void 
+   447 ;; Registers used:
    448 ;;		None
-   449 ;; Return value:  Size  Location     Type
-   450 ;;                  1    wreg      void 
-   451 ;; Registers used:
-   452 ;;		None
-   453 ;; Tracked objects:
-   454 ;;		On entry : 0/0
-   455 ;;		On exit  : 0/0
-   456 ;;		Unchanged: 0/0
-   457 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6
-   458 ;;      Params:         0       0       0       0       0       0       0       0
-   459 ;;      Locals:         0       0       0       0       0       0       0       0
-   460 ;;      Temps:          0       0       0       0       0       0       0       0
-   461 ;;      Totals:         0       0       0       0       0       0       0       0
-   462 ;;Total ram usage:        0 bytes
-   463 ;; Hardware stack levels used:    1
-   464 ;; This function calls:
-   465 ;;		Nothing
-   466 ;; This function is called by:
-   467 ;;		_main
-   468 ;; This function uses a non-reentrant model
-   469 ;;
-   470                           
-   471                           
-   472                           ;psect for function _PIN_MANAGER_Initialize
-   473  07C6                     _PIN_MANAGER_Initialize:
-   474  07C6                     l559:	
-   475                           ;incstack = 0
-   476                           ; Regs used in _PIN_MANAGER_Initialize: []
-   477                           
-   478                           
-   479                           ;main.c: 61:     TRISA2 = 0;
-   480  07C6  0140               	movlb	0	; select bank0
-   481  07C7  1112               	bcf	18,2	;volatile
-   482  07C8                     l17:
-   483  07C8  0008               	return
-   484  07C9                     __end_of_PIN_MANAGER_Initialize:
-   485                           
-   486                           	psect	text3
-   487  07C9                     __ptext3:	
-   488 ;; *************** function _OSCILLATOR_Initialize *****************
-   489 ;; Defined at:
-   490 ;;		line 66 in file "main.c"
-   491 ;; Parameters:    Size  Location     Type
-   492 ;;		None
-   493 ;; Auto vars:     Size  Location     Type
-   494 ;;		None
-   495 ;; Return value:  Size  Location     Type
-   496 ;;                  1    wreg      void 
-   497 ;; Registers used:
-   498 ;;		status,2
-   499 ;; Tracked objects:
-   500 ;;		On entry : 0/0
-   501 ;;		On exit  : 0/0
-   502 ;;		Unchanged: 0/0
-   503 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6
-   504 ;;      Params:         0       0       0       0       0       0       0       0
-   505 ;;      Locals:         0       0       0       0       0       0       0       0
-   506 ;;      Temps:          0       0       0       0       0       0       0       0
-   507 ;;      Totals:         0       0       0       0       0       0       0       0
-   508 ;;Total ram usage:        0 bytes
-   509 ;; Hardware stack levels used:    1
-   510 ;; This function calls:
-   511 ;;		Nothing
-   512 ;; This function is called by:
-   513 ;;		_main
-   514 ;; This function uses a non-reentrant model
-   515 ;;
-   516                           
-   517                           
-   518                           ;psect for function _OSCILLATOR_Initialize
-   519  07C9                     _OSCILLATOR_Initialize:
-   520  07C9                     l561:	
-   521                           ;incstack = 0
-   522                           ; Regs used in _OSCILLATOR_Initialize: [status,2]
-   523                           
+   449 ;; Tracked objects:
+   450 ;;		On entry : 0/0
+   451 ;;		On exit  : 0/0
+   452 ;;		Unchanged: 0/0
+   453 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6
+   454 ;;      Params:         0       0       0       0       0       0       0       0
+   455 ;;      Locals:         0       0       0       0       0       0       0       0
+   456 ;;      Temps:          0       0       0       0       0       0       0       0
+   457 ;;      Totals:         0       0       0       0       0       0       0       0
+   458 ;;Total ram usage:        0 bytes
+   459 ;; Hardware stack levels used:    1
+   460 ;; This function calls:
+   461 ;;		Nothing
+   462 ;; This function is called by:
+   463 ;;		_main
+   464 ;; This function uses a non-reentrant model
+   465 ;;
+   466                           
+   467                           
+   468                           ;psect for function _PIN_MANAGER_Initialize
+   469  07C6                     _PIN_MANAGER_Initialize:
+   470  07C6                     l565:	
+   471                           ;incstack = 0
+   472                           ; Regs used in _PIN_MANAGER_Initialize: []
+   473                           
+   474                           
+   475                           ;main.c: 61:     TRISA2 = 0;
+   476  07C6  0140               	movlb	0	; select bank0
+   477  07C7  1112               	bcf	18,2	;volatile
+   478  07C8                     l17:
+   479  07C8  0008               	return
+   480  07C9                     __end_of_PIN_MANAGER_Initialize:
+   481                           
+   482                           	psect	text3
+   483  07C9                     __ptext3:	
+   484 ;; *************** function _OSCILLATOR_Initialize *****************
+   485 ;; Defined at:
+   486 ;;		line 66 in file "main.c"
+   487 ;; Parameters:    Size  Location     Type
+   488 ;;		None
+   489 ;; Auto vars:     Size  Location     Type
+   490 ;;		None
+   491 ;; Return value:  Size  Location     Type
+   492 ;;                  1    wreg      void 
+   493 ;; Registers used:
+   494 ;;		status,2
+   495 ;; Tracked objects:
+   496 ;;		On entry : 0/0
+   497 ;;		On exit  : 0/0
+   498 ;;		Unchanged: 0/0
+   499 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6
+   500 ;;      Params:         0       0       0       0       0       0       0       0
+   501 ;;      Locals:         0       0       0       0       0       0       0       0
+   502 ;;      Temps:          0       0       0       0       0       0       0       0
+   503 ;;      Totals:         0       0       0       0       0       0       0       0
+   504 ;;Total ram usage:        0 bytes
+   505 ;; Hardware stack levels used:    1
+   506 ;; This function calls:
+   507 ;;		Nothing
+   508 ;; This function is called by:
+   509 ;;		_main
+   510 ;; This function uses a non-reentrant model
+   511 ;;
+   512                           
+   513                           
+   514                           ;psect for function _OSCILLATOR_Initialize
+   515  07C9                     _OSCILLATOR_Initialize:
+   516  07C9                     l567:	
+   517                           ;incstack = 0
+   518                           ; Regs used in _OSCILLATOR_Initialize: [status,2]
+   519                           
+   520                           
+   521                           ;main.c: 68:     OSCEN = 0x00;
+   522  07C9  0151               	movlb	17	; select bank17
+   523  07CA  0191               	clrf	17	;volatile
    524                           
-   525                           ;main.c: 68:     OSCEN = 0x00;
-   526  07C9  0151               	movlb	17	; select bank17
-   527  07CA  0191               	clrf	17	;volatile
-   528                           
-   529                           ;main.c: 69:     OSCFRQ = 0x00;
-   530  07CB  0193               	clrf	19	;volatile
-   531                           
-   532                           ;main.c: 70:     OSCTUNE = 0x00;
-   533  07CC  0192               	clrf	18	;volatile
-   534  07CD                     l20:
-   535  07CD  0008               	return
-   536  07CE                     __end_of_OSCILLATOR_Initialize:
-   537  007E                     btemp	set	126	;btemp
-   538  007E                     wtemp0	set	126
-   539                           
-   540                           	psect	config
-   541                           
-   542                           ;Config register CONFIG1 @ 0x8007
-   543                           ;	External Oscillator Mode Selection bits
-   544                           ;	FEXTOSC = OFF, Oscillator not enabled
-   545                           ;	Power-up Default Value for COSC bits
-   546                           ;	RSTOSC = HFINTOSC_1MHZ, HFINTOSC (1 MHz)
-   547                           ;	Clock Out Enable bit
-   548                           ;	CLKOUTEN = OFF, CLKOUT function is disabled; I/O function on RA4
-   549                           ;	VDD Range Analog Calibration Selection bit
-   550                           ;	VDDAR = HI, Internal analog systems are calibrated for operation between VDD = 2.3V - 
+   525                           ;main.c: 69:     OSCFRQ = 0x00;
+   526  07CB  0193               	clrf	19	;volatile
+   527                           
+   528                           ;main.c: 70:     OSCTUNE = 0x00;
+   529  07CC  0192               	clrf	18	;volatile
+   530  07CD                     l20:
+   531  07CD  0008               	return
+   532  07CE                     __end_of_OSCILLATOR_Initialize:
+   533  007E                     btemp	set	126	;btemp
+   534  007E                     wtemp0	set	126
+   535                           
+   536                           	psect	config
+   537                           
+   538                           ;Config register CONFIG1 @ 0x8007
+   539                           ;	External Oscillator Mode Selection bits
+   540                           ;	FEXTOSC = OFF, Oscillator not enabled
+   541                           ;	Power-up Default Value for COSC bits
+   542                           ;	RSTOSC = HFINTOSC_1MHZ, HFINTOSC (1 MHz)
+   543                           ;	Clock Out Enable bit
+   544                           ;	CLKOUTEN = OFF, CLKOUT function is disabled; I/O function on RA4
+   545                           ;	VDD Range Analog Calibration Selection bit
+   546                           ;	VDDAR = HI, Internal analog systems are calibrated for operation between VDD = 2.3V - 
       +                          5.5V
-   551  8007                     	org	32775
-   552  8007  3FED               	dw	16365
-   553                           
-   554                           ;Config register CONFIG2 @ 0x8008
-   555                           ;	Master Clear Enable bit
-   556                           ;	MCLRE = EXTMCLR, If LVP = 0, MCLR pin is MCLR; If LVP = 1, RA3 pin function is MCLR
-   557                           ;	Power-up Timer Selection bits
-   558                           ;	PWRTS = PWRT_OFF, PWRT is disabled
-   559                           ;	WDT Operating Mode bits
-   560                           ;	WDTE = OFF, WDT disabled; SEN is ignored
-   561                           ;	Brown-out Reset Enable bits
-   562                           ;	BOREN = ON, Brown-out Reset Enabled, SBOREN bit is ignored
-   563                           ;	Brown-out Reset Voltage Selection bit
-   564                           ;	BORV = LO, Brown-out Reset Voltage (VBOR) set to 1.9V
-   565                           ;	PPSLOCKED One-Way Set Enable bit
-   566                           ;	PPS1WAY = ON, The PPSLOCKED bit can be cleared and set only once in software
-   567                           ;	Stack Overflow/Underflow Reset Enable bit
-   568                           ;	STVREN = ON, Stack Overflow or Underflow will cause a reset
-   569  8008                     	org	32776
-   570  8008  3FE7               	dw	16359
-   571                           
-   572                           ;Config register CONFIG4 @ 0x800A
-   573                           ;	Boot Block Size Selection bits
-   574                           ;	BBSIZE = BB512, 512 words boot block size
-   575                           ;	Boot Block Enable bit
-   576                           ;	BBEN = OFF, Boot Block is disabled
-   577                           ;	SAF Enable bit
-   578                           ;	SAFEN = OFF, SAF is disabled
-   579                           ;	Application Block Write Protection bit
-   580                           ;	WRTAPP = OFF, Application Block is not write-protected
-   581                           ;	Boot Block Write Protection bit
-   582                           ;	WRTB = OFF, Boot Block is not write-protected
-   583                           ;	Configuration Registers Write Protection bit
-   584                           ;	WRTC = OFF, Configuration Registers are not write-protected
-   585                           ;	Storage Area Flash (SAF) Write Protection bit
-   586                           ;	WRTSAF = OFF, SAF is not write-protected
-   587                           ;	Low Voltage Programming Enable bit
-   588                           ;	LVP = ON, Low Voltage programming enabled. MCLR/Vpp pin function is MCLR. MCLRE Config
+   547  8007                     	org	32775
+   548  8007  3FED               	dw	16365
+   549                           
+   550                           ;Config register CONFIG2 @ 0x8008
+   551                           ;	Master Clear Enable bit
+   552                           ;	MCLRE = EXTMCLR, If LVP = 0, MCLR pin is MCLR; If LVP = 1, RA3 pin function is MCLR
+   553                           ;	Power-up Timer Selection bits
+   554                           ;	PWRTS = PWRT_OFF, PWRT is disabled
+   555                           ;	WDT Operating Mode bits
+   556                           ;	WDTE = OFF, WDT disabled; SEN is ignored
+   557                           ;	Brown-out Reset Enable bits
+   558                           ;	BOREN = ON, Brown-out Reset Enabled, SBOREN bit is ignored
+   559                           ;	Brown-out Reset Voltage Selection bit
+   560                           ;	BORV = LO, Brown-out Reset Voltage (VBOR) set to 1.9V
+   561                           ;	PPSLOCKED One-Way Set Enable bit
+   562                           ;	PPS1WAY = ON, The PPSLOCKED bit can be cleared and set only once in software
+   563                           ;	Stack Overflow/Underflow Reset Enable bit
+   564                           ;	STVREN = ON, Stack Overflow or Underflow will cause a reset
+   565  8008                     	org	32776
+   566  8008  3FE7               	dw	16359
+   567                           
+   568                           ;Config register CONFIG4 @ 0x800A
+   569                           ;	Boot Block Size Selection bits
+   570                           ;	BBSIZE = BB512, 512 words boot block size
+   571                           ;	Boot Block Enable bit
+   572                           ;	BBEN = OFF, Boot Block is disabled
+   573                           ;	SAF Enable bit
+   574                           ;	SAFEN = OFF, SAF is disabled
+   575                           ;	Application Block Write Protection bit
+   576                           ;	WRTAPP = OFF, Application Block is not write-protected
+   577                           ;	Boot Block Write Protection bit
+   578                           ;	WRTB = OFF, Boot Block is not write-protected
+   579                           ;	Configuration Registers Write Protection bit
+   580                           ;	WRTC = OFF, Configuration Registers are not write-protected
+   581                           ;	Storage Area Flash (SAF) Write Protection bit
+   582                           ;	WRTSAF = OFF, SAF is not write-protected
+   583                           ;	Low Voltage Programming Enable bit
+   584                           ;	LVP = ON, Low Voltage programming enabled. MCLR/Vpp pin function is MCLR. MCLRE Config
       +                          uration bit is ignored.
-   589  800A                     	org	32778
-   590  800A  3FFF               	dw	16383
-   591                           
-   592                           ;Config register CONFIG5 @ 0x800B
-   593                           ;	User Program Flash Memory Code Protection bit
-   594                           ;	CP = OFF, User Program Flash Memory code protection is disabled
-   595  800B                     	org	32779
-   596  800B  3FFF               	dw	16383
+   585  800A                     	org	32778
+   586  800A  3FFF               	dw	16383
+   587                           
+   588                           ;Config register CONFIG5 @ 0x800B
+   589                           ;	User Program Flash Memory Code Protection bit
+   590                           ;	CP = OFF, User Program Flash Memory code protection is disabled
+   591  800B                     	org	32779
+   592  800B  3FFF               	dw	16383
 
 Data Sizes:
     Strings     0
@@ -849,14 +845,14 @@ SFR63                0      0       0      64        0.0%
 
 
 Microchip Technology PIC Macro Assembler V2.30 build 20200825195618 
-Symbol Table                                                                                   Tue Nov 10 12:32:28 2020
+Symbol Table                                                                                   Tue Nov 10 11:27:24 2020
 
-                             l20 07CD                               l23 07D4                               l17 07C8  
-                             l29 07ED                               u20 07EA                               u21 07E9  
-                             u37 07F4                              l561 07C9                              l581 07DB  
-                            l559 07C6                              l583 07DD                              l577 07CE  
-                            l585 07E4                              l587 07EA                              l579 07D5  
-                            l589 07EF                              wreg 0009                             _main 07D5  
+                             l20 07CD                               l23 07D4                               l32 07EA  
+                             l17 07C8                               l35 07ED                               u20 07EA  
+                             u21 07E9                               u37 07F4                              l565 07C6  
+                            l581 07CE                              l567 07C9                              l591 07EF  
+                            l583 07D5                              l585 07DB                              l587 07DD  
+                            l589 07E4                              wreg 0009                             _main 07D5  
                            btemp 007E                             start 0002   __size_of_OSCILLATOR_Initialize 0005  
   __end_of_OSCILLATOR_Initialize 07CE                            ?_main 0070                            _OSCEN 0891  
                 __end_of_paridad 07D5                            status 0003                            wtemp0 007E  

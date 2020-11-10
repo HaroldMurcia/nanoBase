@@ -7,7 +7,7 @@
   10012h - 10013h
   10018h - 1003Fh
   
- dist/default/production/NanoBase.X.production.hex ranges:
+ dist/default/debug/NanoBase.X.debug.hex ranges:
   0h - 7h
   F8Ch - FFFh
   1000Eh - 10011h
@@ -24,7 +24,7 @@
   T = Trailing code
   & = Find & replace opcode
   X = Find & delete opcode
-  1 = dist/default/production/NanoBase.X.production.hex
+  1 = dist/default/debug/NanoBase.X.debug.hex
 00000000: 11111111--------------------------------------------------------
 00000F80: ------------1111111111111111111111111111111111111111111111111111
 00000FC0: 1111111111111111111111111111111111111111111111111111111111111111

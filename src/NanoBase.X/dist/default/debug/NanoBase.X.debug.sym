@@ -362,8 +362,8 @@ text1 F9C FA9 CODE F9C 0
 text3 F92 F9B CODE F92 0
 text2 F8C F91 CODE F8C 0
 %locals
-dist/default/production/NanoBase.X.production.o
-/tmp/xcXfOnpKm.s
+dist/default/debug/NanoBase.X.debug.o
+/tmp/xcXjlkJKL.s
 509 7FD 0 CODE 0
 512 7FD 0 CODE 0
 518 7FD 0 CODE 0
@@ -377,7 +377,6 @@ main.c
 91 7DD 0 CODE 0
 92 7E4 0 CODE 0
 94 7EA 0 CODE 0
-95 7EC 0 CODE 0
 97 7ED 0 CODE 0
 99 7EF 0 CODE 0
 74 7CE 0 CODE 0
