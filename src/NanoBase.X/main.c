@@ -49,6 +49,19 @@
 
 #define LED0_SetHigh()            LATAbits.LATA2 = 1;
 #define LED0_SetLow()             LATAbits.LATA2 = 0;
+#define ACQ_US_DELAY 10
+
+
+///////////////
+typedef uint16_t adc_result_t;
+
+typedef enum
+{
+    channel_ANA0 =  0x0,
+    POT_CHANNEL =  0x12,
+    channel_AVSS =  0x1B,
+    channel_FVR_BUF1 =  0x1E
+} adc_channel_t;
 
 ///////////// VARIABLES GLOBALES  //////////////////
 
@@ -57,8 +70,46 @@ int par_impar=0;
 ///////////// DECLARACI�N DE FUNCIONES Y PROCEDIMIENTOS ///////////////////
 void PIN_MANAGER_Initialize(void)
 {
+    // LATx registers
+    LATA = 0x00;
+    LATB = 0x00;
+    LATC = 0x00;
+
+    // TRISx registers
+    TRISA = 0x3B;
+    TRISB = 0xF0;
+    TRISC = 0xFF;
+
+    // ANSELx registers
+    ANSELC = 0xFB;
+    ANSELB = 0xF0;
+    ANSELA = 0x33;
+
+    // WPUx registers
+    WPUB = 0x00;
+    WPUA = 0x04;
+    WPUC = 0x04;
+
+    // ODx registers
+    ODCONA = 0x00;
+    ODCONB = 0x00;
+    ODCONC = 0x00;
+
+    // SLRCONx registers
+    SLRCONA = 0x37;
+    SLRCONB = 0xF0;
+    SLRCONC = 0xFF;
+
+    // INLVLx registers
+    INLVLA = 0x3F;
+    INLVLB = 0xF0;
+    INLVLC = 0xFF;
+
     // TRISx registers
     TRISA2 = 0;          // Definiendo puerto A2 como salida digital
+    TRISC2 = 1;          // Definiendo puerto C2 como entada digital
+    WPUC2  = 1;          // Activando resistencia d pull-up
+    ANSELAbits.ANSA1 = 1;// Definiendo entrada como analoga
 }
 
 
@@ -71,11 +122,29 @@ void OSCILLATOR_Initialize(void)
 }
 
 
-void paridad(int N){
-    par_impar = N%2;
+void ADC_Initialize(void)
+{
+    ADCON0 = 0x01;                                                              // GO_nDONE stop; ADON enabled; CHS ANA0;
+    ADCON1 = 0x40;                                                              // ADFM left; ADPREF VDD; ADCS FOSC/4;
+    ADRESL = 0x00;
+    ADRESH = 0x00;
 }
 
 
+adc_result_t  ADC_GetConversion(adc_channel_t channel)
+{
+    ADCON0bits.CHS = channel;                                                   // Select the A/D channel
+    ADCON0bits.ADON = 1;                                                        // Turn on the ADC module
+    __delay_us(ACQ_US_DELAY);                                                   // Acquisition time delay
+    ADCON0bits.GO_nDONE = 1;                                                    // Start the conversion
+
+    while (ADCON0bits.GO_nDONE)                                                 // Wait for the conversion to finish
+    {
+        CLRWDT();                                                               // Clear WDT to prevent WDT resets
+    }
+
+    return ((adc_result_t)((ADRESH << 8) + ADRESL));                            // Conversion finished, return the result
+}
 
 /////////////  INICIO DEL PROGRAMA PRINCIPAL //////////////////////////
 
@@ -84,18 +153,16 @@ void main(void)
 {
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
-    // Apagar led
-    LED0_SetLow();
-
+    ADC_Initialize();
     while(1){
-        paridad(7);
-        if (par_impar==1){
-            // Encender led
-            LED0_SetHigh();
+        if (PORTCbits.RC2==1){
+            if (ADC_GetConversion(1) > 512){
+                LATAbits.LATA2 = 0;
+            }else{
+                LATAbits.LATA2 = 1;
+            }
         }else{
-            // Apagar led
-            LED0_SetLow();
+            LATAbits.LATA2 = 0;
         }
-        __delay_ms(1000);
     }
 }

@@ -6076,14 +6076,67 @@ extern void cputs(const char *);
 
 
 #pragma config CP = OFF
-# 55 "main.c"
+# 56 "main.c"
+typedef uint16_t adc_result_t;
+
+typedef enum
+{
+    channel_ANA0 = 0x0,
+    POT_CHANNEL = 0x12,
+    channel_AVSS = 0x1B,
+    channel_FVR_BUF1 = 0x1E
+} adc_channel_t;
+
+
+
 int par_impar=0;
 
 
 void PIN_MANAGER_Initialize(void)
 {
 
+
+    LATA = 0x00;
+    LATB = 0x00;
+    LATC = 0x00;
+
+
+    TRISA = 0x3B;
+    TRISB = 0xF0;
+    TRISC = 0xFF;
+
+
+    ANSELC = 0xFB;
+    ANSELB = 0xF0;
+    ANSELA = 0x33;
+
+
+    WPUB = 0x00;
+    WPUA = 0x04;
+    WPUC = 0x04;
+
+
+    ODCONA = 0x00;
+    ODCONB = 0x00;
+    ODCONC = 0x00;
+
+
+    SLRCONA = 0x37;
+    SLRCONB = 0xF0;
+    SLRCONC = 0xFF;
+
+
+    INLVLA = 0x3F;
+    INLVLB = 0xF0;
+    INLVLC = 0xFF;
+
+
+
+
     TRISA2 = 0;
+    TRISC2 = 1;
+    WPUC2 =1;
+    ANSELAbits.ANSA1 = 1;
 }
 
 
@@ -6096,11 +6149,29 @@ void OSCILLATOR_Initialize(void)
 }
 
 
-void paridad(int N){
-    par_impar = N%2;
+void ADC_Initialize(void)
+{
+    ADCON0 = 0x01;
+    ADCON1 = 0x40;
+    ADRESL = 0x00;
+    ADRESH = 0x00;
+
 }
 
+adc_result_t ADC_GetConversion(adc_channel_t channel)
+{
+    ADCON0bits.CHS = channel;
+    ADCON0bits.ADON = 1;
+    _delay((unsigned long)((10)*(1000000/4000000.0)));
+    ADCON0bits.GO_nDONE = 1;
 
+    while (ADCON0bits.GO_nDONE)
+    {
+        __asm("clrwdt");
+    }
+
+    return ((adc_result_t)((ADRESH << 8) + ADRESL));
+}
 
 
 
@@ -6109,18 +6180,16 @@ void main(void)
 {
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
-
-    LATAbits.LATA2 = 0;;
-
+    ADC_Initialize();
     while(1){
-        paridad(7);
-        if (par_impar==1){
-
-            LATAbits.LATA2 = 1;;
+        if (PORTCbits.RC2==1){
+            if (ADC_GetConversion(1) > 512){
+                LATAbits.LATA2 = 0;
+            }else{
+                LATAbits.LATA2 = 1;
+            }
         }else{
-
-            LATAbits.LATA2 = 0;;
+            LATAbits.LATA2 = 0;
         }
-        _delay((unsigned long)((1000)*(1000000/4000.0)));
     }
 }
