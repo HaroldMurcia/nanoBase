@@ -3,40 +3,23 @@
 [d edition pro ]
 [d chip 16F15244 ]
 [d frameptr 6 ]
-"137 /home/hmurcia/repos/nanoBase/src/NanoBase.X/main.c
-[e E3540 . `uc
-channel_ANA0 0
-POT_CHANNEL 18
-channel_AVSS 27
-channel_FVR_BUF1 30
-]
 "10 /opt/microchip/xc8/v2.30/pic/sources/c99/common/sprcadd.c
 [v ___fladd __fladd `(d  1 e 4 0 ]
 "4 /opt/microchip/xc8/v2.30/pic/sources/c99/common/Umul8_16.c
 [v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
-"71 /home/hmurcia/repos/nanoBase/src/NanoBase.X/main.c
+"66 /home/hmurcia/repos/nanoBase/src/NanoBase.X/main.c
 [v _PIN_MANAGER_Initialize PIN_MANAGER_Initialize `(v  1 e 1 0 ]
-"120
+"114
 [v _OSCILLATOR_Initialize OSCILLATOR_Initialize `(v  1 e 1 0 ]
-"128
-[v _ADC_Initialize ADC_Initialize `(v  1 e 1 0 ]
-"137
-[v _ADC_GetConversion ADC_GetConversion `(us  1 e 2 0 ]
-"155
+"121
+[v _TMR2_Initialize TMR2_Initialize `(v  1 e 1 0 ]
+"132
+[v _PWM3_Initialize PWM3_Initialize `(v  1 e 1 0 ]
+"141
+[v _PWM3_LoadDutyValue PWM3_LoadDutyValue `(v  1 e 1 0 ]
+"149
 [v _main main `(v  1 e 1 0 ]
-[s S108 . 1 `uc 1 RC0 1 0 :1:0 
-`uc 1 RC1 1 0 :1:1 
-`uc 1 RC2 1 0 :1:2 
-`uc 1 RC3 1 0 :1:3 
-`uc 1 RC4 1 0 :1:4 
-`uc 1 RC5 1 0 :1:5 
-`uc 1 RC6 1 0 :1:6 
-`uc 1 RC7 1 0 :1:7 
-]
-"552 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC16F1xxxx_DFP/1.4.119/xc8/pic/include/proc/pic16f15244.h
-[u S117 . 1 `S108 1 . 1 0 ]
-[v _PORTCbits PORTCbits `VES117  1 e 1 @14 ]
-"597
+"597 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC16F1xxxx_DFP/1.4.119/xc8/pic/include/proc/pic16f15244.h
 [v _TRISA TRISA `VEuc  1 e 1 @18 ]
 "647
 [v _TRISB TRISB `VEuc  1 e 1 @19 ]
@@ -44,48 +27,48 @@ channel_FVR_BUF1 30
 [v _TRISC TRISC `VEuc  1 e 1 @20 ]
 "748
 [v _LATA LATA `VEuc  1 e 1 @24 ]
-[s S129 . 1 `uc 1 LATA0 1 0 :1:0 
-`uc 1 LATA1 1 0 :1:1 
-`uc 1 LATA2 1 0 :1:2 
-`uc 1 LATA3 1 0 :1:3 
-`uc 1 LATA4 1 0 :1:4 
-`uc 1 LATA5 1 0 :1:5 
-]
-"763
-[u S136 . 1 `S129 1 . 1 0 ]
-[v _LATAbits LATAbits `VES136  1 e 1 @24 ]
 "798
 [v _LATB LATB `VEuc  1 e 1 @25 ]
 "837
 [v _LATC LATC `VEuc  1 e 1 @26 ]
-"939
-[v _ADRESL ADRESL `VEuc  1 e 1 @155 ]
-"959
-[v _ADRESH ADRESH `VEuc  1 e 1 @156 ]
-"979
-[v _ADCON0 ADCON0 `VEuc  1 e 1 @157 ]
-[s S75 . 1 `uc 1 ON 1 0 :1:0 
-`uc 1 GO 1 0 :1:1 
-`uc 1 CHS 1 0 :6:2 
+"3246
+[v _T2TMR T2TMR `VEuc  1 e 1 @652 ]
+"3300
+[v _T2PR T2PR `VEuc  1 e 1 @653 ]
+"3354
+[v _T2CON T2CON `VEuc  1 e 1 @654 ]
+"3500
+[v _T2HLT T2HLT `VEuc  1 e 1 @655 ]
+"3628
+[v _T2CLKCON T2CLKCON `VEuc  1 e 1 @656 ]
+"3708
+[v _T2RST T2RST `VEuc  1 e 1 @657 ]
+"4255
+[v _PWM3DCL PWM3DCL `VEuc  1 e 1 @788 ]
+"4276
+[v _PWM3DCH PWM3DCH `VEuc  1 e 1 @789 ]
+"4296
+[v _PWM3CON PWM3CON `VEuc  1 e 1 @790 ]
+[s S72 . 1 `uc 1 ADIF 1 0 :1:0 
+`uc 1 SSP1IF 1 0 :1:1 
+`uc 1 BCL1IF 1 0 :1:2 
+`uc 1 TX1IF 1 0 :1:3 
+`uc 1 RC1IF 1 0 :1:4 
+`uc 1 TMR1IF 1 0 :1:5 
+`uc 1 TMR2IF 1 0 :1:6 
+`uc 1 CCP1IF 1 0 :1:7 
 ]
-"1000
-[s S79 . 1 `uc 1 ADON 1 0 :1:0 
-`uc 1 GO_nDONE 1 0 :1:1 
-`uc 1 ADCHS 1 0 :6:2 
-]
-[s S83 . 1 `uc 1 . 1 0 :1:0 
-`uc 1 ADGO 1 0 :1:1 
-]
-[u S86 . 1 `S75 1 . 1 0 `S79 1 . 1 0 `S83 1 . 1 0 ]
-[v _ADCON0bits ADCON0bits `VES86  1 e 1 @157 ]
-"1040
-[v _ADCON1 ADCON1 `VEuc  1 e 1 @158 ]
+"5138
+[u S81 . 1 `S72 1 . 1 0 ]
+[v _PIR1bits PIR1bits `VES81  1 e 1 @1805 ]
 "5786
 [v _OSCEN OSCEN `VEuc  1 e 1 @2193 ]
 "5826
 [v _OSCTUNE OSCTUNE `VEuc  1 e 1 @2194 ]
 "5884
 [v _OSCFRQ OSCFRQ `VEuc  1 e 1 @2195 ]
+"7217
+[v _RA2PPS RA2PPS `VEuc  1 e 1 @7954 ]
 "8087
 [v _ANSELA ANSELA `VEuc  1 e 1 @7992 ]
 [s S46 . 1 `uc 1 ANSA0 1 0 :1:0 
@@ -132,32 +115,34 @@ channel_FVR_BUF1 30
 [v _TRISC2 TRISC2 `VEb  1 e 0 @162 ]
 "11830
 [v _WPUC2 WPUC2 `VEb  1 e 0 @64122 ]
-"155 /home/hmurcia/repos/nanoBase/src/NanoBase.X/main.c
+"149 /home/hmurcia/repos/nanoBase/src/NanoBase.X/main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"171
+"159
 } 0
-"71
+"121
+[v _TMR2_Initialize TMR2_Initialize `(v  1 e 1 0 ]
+{
+"130
+} 0
+"141
+[v _PWM3_LoadDutyValue PWM3_LoadDutyValue `(v  1 e 1 0 ]
+{
+[v PWM3_LoadDutyValue@dutyValue dutyValue `us  1 p 2 0 ]
+"145
+} 0
+"132
+[v _PWM3_Initialize PWM3_Initialize `(v  1 e 1 0 ]
+{
+"137
+} 0
+"66
 [v _PIN_MANAGER_Initialize PIN_MANAGER_Initialize `(v  1 e 1 0 ]
 {
-"116
+"110
 } 0
-"120
+"114
 [v _OSCILLATOR_Initialize OSCILLATOR_Initialize `(v  1 e 1 0 ]
 {
-"125
-} 0
-"128
-[v _ADC_Initialize ADC_Initialize `(v  1 e 1 0 ]
-{
-"135
-} 0
-"137
-[v _ADC_GetConversion ADC_GetConversion `(us  1 e 2 0 ]
-{
-[v ADC_GetConversion@channel channel `E3540  1 a 1 wreg ]
-[v ADC_GetConversion@channel channel `E3540  1 a 1 wreg ]
-"139
-[v ADC_GetConversion@channel channel `E3540  1 a 1 3 ]
-"150
+"119
 } 0

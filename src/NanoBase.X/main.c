@@ -53,20 +53,15 @@
 
 
 ///////////////
-typedef uint16_t adc_result_t;
 
-typedef enum
-{
-    channel_ANA0 =  0x0,
-    POT_CHANNEL =  0x12,
-    channel_AVSS =  0x1B,
-    channel_FVR_BUF1 =  0x1E
-} adc_channel_t;
 
 ///////////// VARIABLES GLOBALES  //////////////////
 
 int par_impar=0;
-
+uint16_t dutyCycle10 = 10;
+uint16_t dutyCycle50 = 0x01F4;
+uint16_t dutyCycle75 = 0x02EE;
+uint16_t dutyCycle100 = 0x03E7;
 ///////////// DECLARACI�N DE FUNCIONES Y PROCEDIMIENTOS ///////////////////
 void PIN_MANAGER_Initialize(void)
 {
@@ -110,6 +105,8 @@ void PIN_MANAGER_Initialize(void)
     TRISC2 = 1;          // Definiendo puerto C2 como entada digital
     WPUC2  = 1;          // Activando resistencia d pull-up
     ANSELAbits.ANSA1 = 1;// Definiendo entrada como analoga
+    
+    RA2PPS = 0x03;                                                              // RA2->PWM3:PWM3OUT; 
 }
 
 
@@ -121,31 +118,31 @@ void OSCILLATOR_Initialize(void)
     OSCTUNE = 0x00;
 }
 
-
-void ADC_Initialize(void)
+void TMR2_Initialize(void)
 {
-    ADCON0 = 0x01;                                                              // GO_nDONE stop; ADON enabled; CHS ANA0;
-    ADCON1 = 0x40;                                                              // ADFM left; ADPREF VDD; ADCS FOSC/4;
-    ADRESL = 0x00;
-    ADRESH = 0x00;
+    T2CLKCON = 0x01;                                                            // T2CS FOSC/4;  
+    T2HLT = 0x00;                                                               // T2PSYNC Not Synchronized; T2MODE Software control; T2CKPOL Rising Edge; T2CKSYNC Not Synchronized; 
+    T2RST = 0x00; 
+    T2PR = 249; 
+    T2TMR = 0x00;
+    PIR1bits.TMR2IF = 0;                                                        // Clearing IF flag.
+    T2CON = 0b10000000;                                                               // T2CKPS 1:1; T2OUTPS 1:1; TMR2ON on; 
 }
 
+ void PWM3_Initialize(void)
+ {     
+    PWM3CON = 0x90;                                                             // PWM3POL active_low; PWM3EN enabled; 
+    PWM3DCH = 0x3E;    
+    PWM3DCL = 0x40;   
+ }
 
-adc_result_t  ADC_GetConversion(adc_channel_t channel)
-{
-    ADCON0bits.CHS = channel;                                                   // Select the A/D channel
-    ADCON0bits.ADON = 1;                                                        // Turn on the ADC module
-    __delay_us(ACQ_US_DELAY);                                                   // Acquisition time delay
-    ADCON0bits.GO_nDONE = 1;                                                    // Start the conversion
 
-    while (ADCON0bits.GO_nDONE)                                                 // Wait for the conversion to finish
-    {
-        CLRWDT();                                                               // Clear WDT to prevent WDT resets
-    }
-
-    return ((adc_result_t)((ADRESH << 8) + ADRESL));                            // Conversion finished, return the result
-}
-
+ 
+  void PWM3_LoadDutyValue(uint16_t dutyValue)
+ {     
+     PWM3DCH = (dutyValue & 0x03FC)>>2;                                         // Writing to 8 MSBs of PWM duty cycle in PWMDCH register     
+     PWM3DCL = (dutyValue & 0x0003)<<6;                                         // Writing to 2 LSBs of PWM duty cycle in PWMDCL register
+ }
 /////////////  INICIO DEL PROGRAMA PRINCIPAL //////////////////////////
 
 
@@ -153,16 +150,10 @@ void main(void)
 {
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
-    ADC_Initialize();
+    TMR2_Initialize();
+    PWM3_Initialize();
     while(1){
-        if (PORTCbits.RC2==1){
-            if (ADC_GetConversion(1) > 512){
-                LATAbits.LATA2 = 0;
-            }else{
-                LATAbits.LATA2 = 1;
-            }
-        }else{
-            LATAbits.LATA2 = 0;
-        }
+      PWM3_LoadDutyValue(dutyCycle10);
+      __delay_ms(10);
     }
 }

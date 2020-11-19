@@ -6076,25 +6076,15 @@ extern void cputs(const char *);
 
 
 #pragma config CP = OFF
-# 56 "main.c"
-typedef uint16_t adc_result_t;
-
-typedef enum
-{
-    channel_ANA0 = 0x0,
-    POT_CHANNEL = 0x12,
-    channel_AVSS = 0x1B,
-    channel_FVR_BUF1 = 0x1E
-} adc_channel_t;
-
-
-
+# 60 "main.c"
 int par_impar=0;
-
+uint16_t dutyCycle10 = 10;
+uint16_t dutyCycle50 = 0x01F4;
+uint16_t dutyCycle75 = 0x02EE;
+uint16_t dutyCycle100 = 0x03E7;
 
 void PIN_MANAGER_Initialize(void)
 {
-
 
     LATA = 0x00;
     LATB = 0x00;
@@ -6131,12 +6121,12 @@ void PIN_MANAGER_Initialize(void)
     INLVLC = 0xFF;
 
 
-
-
     TRISA2 = 0;
     TRISC2 = 1;
-    WPUC2 =1;
+    WPUC2 = 1;
     ANSELAbits.ANSA1 = 1;
+
+    RA2PPS = 0x03;
 }
 
 
@@ -6148,31 +6138,31 @@ void OSCILLATOR_Initialize(void)
     OSCTUNE = 0x00;
 }
 
-
-void ADC_Initialize(void)
+void TMR2_Initialize(void)
 {
-    ADCON0 = 0x01;
-    ADCON1 = 0x40;
-    ADRESL = 0x00;
-    ADRESH = 0x00;
-
+    T2CLKCON = 0x01;
+    T2HLT = 0x00;
+    T2RST = 0x00;
+    T2PR = 249;
+    T2TMR = 0x00;
+    PIR1bits.TMR2IF = 0;
+    T2CON = 0b10000000;
 }
 
-adc_result_t ADC_GetConversion(adc_channel_t channel)
-{
-    ADCON0bits.CHS = channel;
-    ADCON0bits.ADON = 1;
-    _delay((unsigned long)((10)*(1000000/4000000.0)));
-    ADCON0bits.GO_nDONE = 1;
+ void PWM3_Initialize(void)
+ {
+    PWM3CON = 0x90;
+    PWM3DCH = 0x3E;
+    PWM3DCL = 0x40;
+ }
 
-    while (ADCON0bits.GO_nDONE)
-    {
-        __asm("clrwdt");
-    }
 
-    return ((adc_result_t)((ADRESH << 8) + ADRESL));
-}
 
+  void PWM3_LoadDutyValue(uint16_t dutyValue)
+ {
+     PWM3DCH = (dutyValue & 0x03FC)>>2;
+     PWM3DCL = (dutyValue & 0x0003)<<6;
+ }
 
 
 
@@ -6180,16 +6170,10 @@ void main(void)
 {
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
-    ADC_Initialize();
+    TMR2_Initialize();
+    PWM3_Initialize();
     while(1){
-        if (PORTCbits.RC2==1){
-            if (ADC_GetConversion(1) > 512){
-                LATAbits.LATA2 = 0;
-            }else{
-                LATAbits.LATA2 = 1;
-            }
-        }else{
-            LATAbits.LATA2 = 0;
-        }
+      PWM3_LoadDutyValue(dutyCycle10);
+      _delay((unsigned long)((10)*(1000000/4000.0)));
     }
 }
